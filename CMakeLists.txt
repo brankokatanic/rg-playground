@@ -16,7 +16,7 @@ set(CMAKE_CXX_STANDARD 14)
 list(APPEND CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-variable -Wno-unused-parameter -O3")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake/modules")
 
-file(GLOB SOURCES "src/**.cpp" "src/**.c" src/main.cpp)
+file(GLOB SOURCES "src/**.cpp" "src/**.c" src/example1.cpp)
 file(GLOB HEADERS "include/**.h" "include/**.hpp")
 
 find_package(OpenGL REQUIRED)
@@ -39,13 +39,14 @@ set(LIBS glfw glad OpenGL::GL X11 Xrandr Xinerama Xi Xxf86vm Xcursor dl pthread 
 include_directories(${CMAKE_BINARY_DIR}/configuration)
 
 include_directories(include/)
-add_executable(${PROJECT_NAME}
-        ${SOURCES})
+file(GLOB SOURCES "src/*.cpp")
 
-target_link_libraries(${PROJECT_NAME} ${LIBS})
-
-# set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/bin/${PROJECT_NAME}")
-set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}")
+foreach(SOURCE_FILE ${SOURCES})
+    get_filename_component(EXECUTABLE_NAME ${SOURCE_FILE} NAME_WE)
+    add_executable(${EXECUTABLE_NAME} ${SOURCE_FILE})
+    target_link_libraries(${EXECUTABLE_NAME} ${LIBS})
+    set_target_properties(${EXECUTABLE_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}")
+endforeach()
 file(GLOB SHADERS "shaders/*.vs"
         "shaders/*.fs")
 foreach(SHADER ${SHADERS})

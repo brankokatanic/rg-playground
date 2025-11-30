@@ -19,7 +19,40 @@ sudo apt install cmake git build-essential libglfw3 libglfw3-dev libx11-dev libx
 
 *Note: Standard OpenGL and system libraries (X11, dl, pthread, etc.) are usually available by default or installed with build-essentials/graphics drivers.*
 
-## 1. How to use Shader class
+## 1. Building from Terminal
+
+To build the project, use the following commands:
+
+```bash
+cmake -S . -B build
+cmake --build build --parallel
+./example1
+```
+
+### Adding and Running Multiple Examples
+
+The project is configured to automatically generate a separate executable for every `.cpp` file found in the `src/` directory.
+
+**To add a new example:**
+1.  Create a new `.cpp` file in the `src/` directory (e.g., `src/my_example.cpp`).
+2.  Write your code in this file. Ensure it has a `main` function.
+
+If you have added a new file, you need to re-run cmake to detect it:
+```bash
+cmake -S . -B build
+cmake --build build --parallel
+```
+
+**To run:**
+The executable will be named after your source file (without the extension) and placed in the project root directory.
+```bash
+./my_example
+```
+
+
+
+
+## 2. How to use Shader class
 
 The `Shader` class abstracts the details of compiling and linking vertex and fragment shaders.
 
@@ -58,7 +91,7 @@ glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)width/(float
 myShader.setMat4("projection", projection);
 ```
 
-## 2. How to use Model class
+## 3. How to use Model class
 
 The `Model` class handles loading 3D models using the Assimp library. It processes meshes and textures automatically.
 
@@ -83,7 +116,7 @@ myShader.use();
 ourModel.Draw(myShader);
 ```
 
-## 3. How to do the basic ImGui setup
+## 4. How to do the basic ImGui setup
 
 This project bundles ImGui. To use it in your `main.cpp`, you need to initialize the context, setup the platform/renderer backends, and render the draw data.
 
@@ -139,3 +172,4 @@ ImGui_ImplOpenGL3_Shutdown();
 ImGui_ImplGlfw_Shutdown();
 ImGui::DestroyContext();
 ```
+
