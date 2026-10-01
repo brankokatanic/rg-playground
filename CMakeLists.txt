@@ -20,21 +20,23 @@ file(GLOB SOURCES "src/**.cpp" "src/**.c" src/example1.cpp)
 file(GLOB HEADERS "include/**.h" "include/**.hpp")
 
 find_package(OpenGL REQUIRED)
-find_package(GLFW3 REQUIRED)
 find_package(ASSIMP REQUIRED)
 
+add_subdirectory(libs/glfw)
 add_subdirectory(libs/glad)
 add_subdirectory(libs/imgui)
+add_subdirectory(libs/stb)
+add_subdirectory(libs/spdlog)
+add_subdirectory(libs/glm)
 
 add_definitions(${OPENGL_DEFINITIONS})
 
-add_library(STB_IMAGE libs/stb_image.cpp)
 set_source_files_properties(libs/stb_image.cpp include/stb_image.h
         PROPERTIES
         COMPILE_FLAGS
         "-Wno-shift-negative-value -Wno-implicit-fallthrough")
 
-set(LIBS glfw glad OpenGL::GL X11 Xrandr Xinerama Xi Xxf86vm Xcursor dl pthread freetype ${ASSIMP_LIBRARIES} STB_IMAGE imgui)
+set(LIBS glfw glad glm spdlog stb OpenGL::GL X11 Xrandr Xinerama Xi Xxf86vm Xcursor dl pthread freetype ${ASSIMP_LIBRARIES} imgui)
 
 include_directories(${CMAKE_BINARY_DIR}/configuration)
 
